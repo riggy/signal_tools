@@ -20,6 +20,10 @@ module SignalTools
       trim_data_to_range!(ema_points(period, @stock_data.close_prices))
     end
 
+    def sma(period=10)
+      trim_data_to_range!(sma_points(period, @stock_data.close_prices))
+    end
+
     def macd(fast=8, slow=17, signal=9)
       trim_data_to_range!(macd_points(fast, slow, signal))
     end
@@ -57,6 +61,7 @@ module SignalTools
       if type == :wilder
         data.slice(EMA_Seed_Days..-1).each { |current| emas << calculate_wilder_ema(emas.last, current, period) }
       else
+        #Start from 10 days in and run until yesterday
         data.slice(EMA_Seed_Days..-1).each { |current| emas << calculate_ema(emas.last, current, period) }
       end
       emas
@@ -66,6 +71,9 @@ module SignalTools
     def calculate_ema(previous, current, period)
       (current - previous) * (2.0 / (period + 1)) + previous
     end
+
+
+
 
     #Uses Wilder's moving average formula.
     def calculate_wilder_ema(previous, current, period)
@@ -81,6 +89,22 @@ module SignalTools
       end
       sum_emas
     end
+
+
+    ###### SMA methods
+    def sma_points(period, data)
+      smas = []
+      data.each_cons(period){|e|
+        sum = 0
+        e.each{|ee|sum += ee}
+        sma = sum.to_f / period.to_f
+        smas << sma
+      } 
+      smas
+    end
+
+
+
 
     #### MACD Methods
 
