@@ -1,6 +1,6 @@
 source "http://rubygems.org"
 
-gem 'yahoofinance'
+gem 'yahoofinance', :github => 'andywatts/yahoofinance'
 
 group :development, :test do
   gem 'ruby-debug19'
