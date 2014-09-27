@@ -8,11 +8,11 @@ module SignalTools
     attr_accessor :ticker
     attr_reader :stock_data
 
-    def initialize(ticker, from_date=Date.today-Default_Period, to_date=Date.today)
+    def initialize(ticker, from_date=Date.today-Default_Period, to_date=Date.today, stock_data = nil)
       from_date = Date.parse(from_date) unless from_date.is_a?(Date)
       to_date = Date.parse(to_date) unless to_date.is_a?(Date)
       @ticker = ticker
-      @stock_data = SignalTools::StockData.new(ticker, from_date, to_date)
+      @stock_data = stock_data || SignalTools::StockData.new(ticker, from_date, to_date)
     end
 
     # Takes a period of days over which to average closing prices and returns the exponential moving average for each day.
